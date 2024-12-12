@@ -1,0 +1,11 @@
+{
+  "name": "backprospect",
+  "version": "1.0.0",
+  "description": "servidor de api rest para o servidor de prospect",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
