@@ -1,0 +1,110 @@
+/* estilo corpo da pagina */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+/* estilo container */
+.container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* titulo */
+h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* estilo tabelas */
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* cabecalho tabela */
+thead {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+/* estilo celulas tabela */
+td, th {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* linhas da tabela */
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* remove bug tabela */
+tr:hover {
+    background-color: transparent;
+}
+
+/* estilo botoes tabela */
+.action-button {
+    background-color: #28a745;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    margin-right: 5px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+/* estilo botao exclusao */
+.action-button.delete {
+    background-color: #dc3545;
+}
+
+/* efeito hover botoes */
+.action-button:hover {
+    opacity: 0.9;
+}
+
+/* botoes topo */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* botoes gerais */
+button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
