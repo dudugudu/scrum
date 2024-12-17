@@ -14,29 +14,31 @@ describe("User Routes", () => {
       name: "John Doe",
       email: "john@example.com",
       password: "password123",
+      login: "john",
+      phone: "123456789",
     });
 
     expect(response.status).toBe(201);
     expect(response.body).toHaveProperty("id");
-    expect(response.body.email).toBe("john@example.com");
+    expect(response.body.login).toBe("john");
   });
 
   test("Deve validar login com sucesso", async () => {
     const response = await request(app)
       .post("/api/users/login")
-      .send({ email: "john@example.com", password: "password123" });
+      .send({ login: "john", password: "password123" });
 
     expect(response.status).toBe(200);
     expect(response.body).toHaveProperty("id");
-    expect(response.body.email).toBe("john@example.com");
+    expect(response.body.login).toBe("john");
   });
 
   test("Deve retornar erro para login inválido", async () => {
     const response = await request(app)
       .post("/api/users/login")
-      .send({ email: "invalid@example.com", password: "password123" });
+      .send({ login: "invalid", password: "password123" });
 
     expect(response.status).toBe(401);
-    expect(response.body.error).toBe("Email ou senha inválidos");
+    expect(response.body.error).toBe("login ou senha inválidos");
   });
 });

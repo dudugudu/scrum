@@ -6,12 +6,13 @@ export const validateSignup: RequestHandler = (
   res: Response,
   next: NextFunction
 ): void => {
-  const { name, email, password } = req.body;
+  const { name, email, password, login, phone } = req.body;
 
-  if (!name || !email || !password) {
-    res
-      .status(400)
-      .json({ error: "Todos os campos (nome, email, senha) são obrigatórios" });
+  if (!name || !email || !password || !login || !phone) {
+    res.status(400).json({
+      error:
+        "Todos os campos (nome, email, senha,login,phone) são obrigatórios",
+    });
     return; // Garante que a função retorne após enviar a resposta
   }
 

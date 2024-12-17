@@ -5,9 +5,15 @@ const userService = new UserService();
 
 export class UserController {
   async createUser(req: Request, res: Response) {
-    const { name, email, password } = req.body;
+    const { name, email, password, login, phone } = req.body;
     try {
-      const user = await userService.createUser(name, email, password);
+      const user = await userService.createUser({
+        name,
+        email,
+        password,
+        login,
+        phone,
+      });
       res.status(201).json(user);
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -19,9 +25,9 @@ export class UserController {
   }
 
   async login(req: Request, res: Response) {
-    const { email, password } = req.body;
+    const { login, password } = req.body;
     try {
-      const user = await userService.validateLogin(email, password);
+      const user = await userService.validateLogin(login, password);
       res.status(200).json(user);
     } catch (error: unknown) {
       if (error instanceof Error) {

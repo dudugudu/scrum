@@ -16,20 +16,26 @@ describe("UserService", () => {
       name: "John Doe",
       email: "john@example.com",
       password: "password123",
+      login: "john",
+      phone: "123456789",
     };
     mockPrismaClient.user.create.mockResolvedValue(mockUser);
 
-    const result = await userService.createUser(
-      "John Doe",
-      "john@example.com",
-      "password123"
-    );
+    const result = await userService.createUser({
+      name: "John Doe",
+      email: "john@example.com",
+      password: "password123",
+      login: "john",
+      phone: "123456789",
+    });
 
     expect(mockPrismaClient.user.create).toHaveBeenCalledWith({
       data: {
         name: "John Doe",
         email: "john@example.com",
         password: "password123",
+        login: "john",
+        phone: "123456789",
       },
     });
     expect(result).toEqual(mockUser);
@@ -39,8 +45,8 @@ describe("UserService", () => {
     mockPrismaClient.user.findUnique.mockResolvedValue(null);
 
     await expect(
-      userService.validateLogin("john@example.com", "password123")
-    ).rejects.toThrow("Email ou senha inválidos");
+      userService.validateLogin("john", "password123")
+    ).rejects.toThrow("login ou senha inválidos");
   });
 
   test("Deve retornar erro se senha estiver incorreta", async () => {
@@ -49,11 +55,13 @@ describe("UserService", () => {
       name: "John Doe",
       email: "john@example.com",
       password: "password123",
+      login: "john",
+      phone: "123456789",
     };
     mockPrismaClient.user.findUnique.mockResolvedValue(mockUser);
 
     await expect(
-      userService.validateLogin("john@example.com", "wrongpassword")
-    ).rejects.toThrow("Email ou senha inválidos");
+      userService.validateLogin("john", "wrongpassword")
+    ).rejects.toThrow("login ou senha inválidos");
   });
 });

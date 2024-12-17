@@ -14,14 +14,21 @@ describe("Middleware de Validação - validateSignup", () => {
 
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.json).toHaveBeenCalledWith({
-      error: "Todos os campos (nome, email, senha) são obrigatórios",
+      error:
+        "Todos os campos (nome, email, senha,login,phone) são obrigatórios",
     });
     expect(next).not.toHaveBeenCalled();
   });
 
   test("Deve retornar erro se o email for inválido", () => {
     const req = {
-      body: { name: "John", email: "emailinvalido", password: "123456" },
+      body: {
+        name: "John",
+        email: "emailinvalido",
+        password: "123456",
+        login: "john",
+        phone: "123456789",
+      },
     } as Request;
     const res = {
       status: jest.fn().mockReturnThis(),
@@ -40,7 +47,13 @@ describe("Middleware de Validação - validateSignup", () => {
 
   test("Deve retornar erro se a senha for muito curta", () => {
     const req = {
-      body: { name: "John", email: "john@example.com", password: "123" },
+      body: {
+        name: "John",
+        email: "john@example.com",
+        password: "123",
+        login: "john",
+        phone: "123456789",
+      },
     } as Request;
     const res = {
       status: jest.fn().mockReturnThis(),
@@ -59,7 +72,13 @@ describe("Middleware de Validação - validateSignup", () => {
 
   test("Deve chamar next() quando todos os campos forem válidos", () => {
     const req = {
-      body: { name: "John", email: "john@example.com", password: "123456" },
+      body: {
+        name: "John",
+        email: "john@example.com",
+        password: "123456",
+        login: "john",
+        phone: "123456789",
+      },
     } as Request;
     const res = {} as Response;
     const next = jest.fn();

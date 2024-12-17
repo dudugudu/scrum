@@ -1,17 +1,18 @@
 import { PrismaClient } from "@prisma/client";
+import { User } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export class UserService {
-  async createUser(name: string, email: string, password: string) {
+  async createUser(data: any) {
     return await prisma.user.create({
-      data: { name, email, password },
+      data,
     });
   }
 
-  async validateLogin(email: string, password: string) {
-    const user = await prisma.user.findUnique({ where: { email } });
+  async validateLogin(login: string, password: string) {
+    const user = await prisma.user.findUnique({ where: { login } });
     if (!user || user.password !== password) {
-      throw new Error("Email ou senha inválidos");
+      throw new Error("login ou senha inválidos");
     }
     return user;
   }
