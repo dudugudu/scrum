@@ -1,34 +1,69 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela de Login</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8f9fa;
+        }
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Login</h2>
-        <form id="loginForm">
-    <label for="usuario">Usuário:</label>
-    <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário">
-    <br>
-    <label for="senha">Senha:</label>
-    <input type="password" id="senha" name="senha" placeholder="Digite sua senha">
+    <form class="login-container" name="loginForm" id="loginForm">
+        <div class="login-form">
+            <h2 class="text-center mb-4">Login</h2>
+            <form>
+                <div class="mb-3">
+                    <label for="login" class="form-label">Login</label>
+                    <input type="text" name="login" class="form-control" id="login" placeholder="Login" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Senha</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Sua senha" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                <p class="text-center mt-3">Não tem cadastro? <a href="#" onclick="abrirCadastro()">Clique aqui para se cadastrar</a></p>
+            </form>
+        </div>
+    </form>
 
-    <div class="buttons">
-        <button type="button" onclick="abrirCadastro()">Cadastrar Usuário</button>
-        <button type="button" onclick="realizarLogin()">Login</button>
-    </div>
-</form>
-
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
+        window.onload = () => {
+            document.getElementById("loginForm").onsubmit = realizarLogin;
+        }
         function abrirCadastro() {
             window.location.href = "cadastro.html";
         }
 
-        function realizarLogin(event){
+        async function realizarLogin(e) {
+            e.preventDefault();
+            let formData = new FormData(document.getElementById("loginForm"));
+            const response = await fetch("/api/users/login", {
+                method: "POST",
+                body: JSON.stringify({ ...Object.fromEntries(formData) }),
+                headers: { "Content-Type": "application/json" }
+            });
+            const data = await response.json();
+            if (!response.ok) {
+                alert(data.error);
+                return;
+            }
             window.location.href = "prospects.html";
         }
     </script>
