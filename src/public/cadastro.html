@@ -4,36 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
-    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 500px;
+            margin-top: 2rem;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>Cadastro de Usuário</h2>
-        <form id="cadastroForm">
-            <label for="nome">Nome:</label>
-            <input type="text" id="nome" name="nome" placeholder="Digite seu nome">
-            <br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" placeholder="Digite seu email">
-            <br>
-            <label for="celular">Celular:</label>
-            <input type="tel" id="celular" name="celular" placeholder="Digite seu celular">
-            <br>
-            <label for="login">Login:</label>
-            <input type="text" id="login" name="login" placeholder="Crie um login">
-            <br>
-            <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" placeholder="Crie uma senha">
-            <br>
-            <div class="buttons">
-                <button type="button" onclick="voltarLogin()">Voltar</button>
-                <button type="submit">Cadastrar</button>
+        <h2 class="text-center mb-4">Cadastro de Usuário</h2>
+        <form name="cadastroForm" id="cadastroForm">
+            <div class="mb-3">
+                <label for="nome" class="form-label">Nome:</label>
+                <input type="text" class="form-control" id="nome" name="name" placeholder="Digite seu nome">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Digite seu email">
+            </div>
+
+            <div class="mb-3">
+                <label for="celular" class="form-label">Celular:</label>
+                <input type="tel" class="form-control" id="celular" name="phone" placeholder="Digite seu celular">
+            </div>
+
+            <div class="mb-3">
+                <label for="login" class="form-label">Login:</label>
+                <input type="text" class="form-control" id="login" name="login" placeholder="Crie um login">
+            </div>
+
+            <div class="mb-3">
+                <label for="senha" class="form-label">Senha:</label>
+                <input type="password" class="form-control" id="senha" name="password" placeholder="Crie uma senha">
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-secondary" onclick="voltarLogin()">Voltar</button>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
             </div>
         </form>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
+        window.onload = () => {
+            document.getElementById("cadastroForm").onsubmit = (e) => {
+                e.preventDefault();
+                cadastrar();
+            }
+        };
+
         function voltarLogin() {
-            window.location.href = "index.html";
+            window.location.href = "/";
+        }
+
+        async function cadastrar() {
+            let formData = new FormData(document.getElementById("cadastroForm"));
+            const response = await fetch("/api/users/signup", {
+                method: "POST",
+                body: JSON.stringify({ ...Object.fromEntries(formData) }),
+                headers: { "Content-Type": "application/json" }
+            });
+            if (!response.ok) {
+                alert("Erro ao cadastrar");
+                return;
+            }
+            const data = await response.json();
+            voltarLogin();
         }
     </script>
 </body>
