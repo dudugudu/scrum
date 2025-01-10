@@ -28,3 +28,38 @@ export const validateSignup: RequestHandler = (
 
   next(); // Continua para o próximo middleware/controller
 };
+
+export const validateProspect: RequestHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
+  const { name, email, celular, whatsapp, facebook } = req.body;
+
+  if (!name) {
+    res.status(400).json({ error: "Nome inválido ou ausente" });
+    return;
+  }
+
+  if (typeof email !== "string" || !email.includes("@")) {
+    res.status(400).json({ error: "Email inválido ou ausente" });
+    return;
+  }
+
+  if (!celular) {
+    res.status(400).json({ error: "Celular inválido ou ausente" });
+    return;
+  }
+
+  if (!whatsapp) {
+    res.status(400).json({ error: "Whatsapp inválido" });
+    return;
+  }
+
+  if (!facebook) {
+    res.status(400).json({ error: "Facebook inválido" });
+    return;
+  }
+
+  next();
+};

@@ -22,3 +22,12 @@ model User {
   login     String   @unique
   createdAt DateTime @default(now())
 }
+
+model Prospect {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  whatsapp String?
+  facebook String?
+  celular  String?
+}
