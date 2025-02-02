@@ -1,63 +1,106 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Listagem de Prospects</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
-        .container {
-            padding: 2rem;
-        }
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
+      .container {
+        padding: 2rem;
+      }
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <div class="header-container">
-            <h2>Listagem de Prospects</h2>
-            <button class="btn btn-primary" onclick="cadastrarProspect()">
-                <i class="bi bi-plus-circle me-2"></i>
-                Cadastrar Prospect
-            </button>
-        </div>
+      <div class="header-container">
+        <h2>Listagem de Prospects</h2>
+        <button class="btn btn-primary" onclick="cadastrarProspect()">
+          <i class="bi bi-plus-circle me-2"></i>
+          Cadastrar Prospect
+        </button>
+      </div>
 
-        <div class="table-responsive">
-            <table class="table table-striped table-hover">
-                <thead class="table-light">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Exemplo de linha (remover quando integrar com backend) -->
-                    <tr>
-                        <td>1</td>
-                        <td>João Silva</td>
-                        <td>joao@email.com</td>
-                        <td>
-                            <button class="btn btn-sm btn-info me-1">Editar</button>
-                            <button class="btn btn-sm btn-danger">Excluir</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Nome</th>
+              <th scope="col">Email</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="prospects"></tbody>
+        </table>
+      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
-        function cadastrarProspect() {
-            alert("função de cadastro de prospect backend.");
+      window.onload = () => {
+        GetProspect();
+      };
+      function abrirCadastro() {
+        window.location.href = "cadastro.html";
+      }
+
+      async function GetProspect() {
+        const response = await fetch("/api/prospects", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
+        console.log(data);
+
+        data.map((prospect) => {
+          const tr = document.createElement("tr");
+          const { id, name, email, whatsapp, celular, facebook } = prospect;
+          tr.innerHTML = `
+            <td>${id}</td>
+            <td>${name}</td>
+            <td>${email}</td>
+            <td>${whatsapp}</td>
+            <td>${celular}</td>
+            <td>${facebook}</td>
+            <td>
+              <button onclick="Editar(${id})"  class="btn btn-sm btn-info me-1">Editar</button>
+              <button onclick="Excluir(${id})" class="btn btn-sm btn-danger">Excluir</button>
+            </td>
+          `;
+          document.getElementById("prospects").appendChild(tr);
+        });
+        if (!response.ok) {
+          alert(data.error);
+          return;
         }
+      }
+
+      async function Editar(id) {
+        window.location.href = "editProspect.html?id=" + id;
+      }
+
+      async function Excluir(id) {
+        const response = await fetch(`/api/prospects/${id}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+        }).then(() => {
+          window.location.reload();
+        });
+      }
+
+      function cadastrarProspect() {
+        window.location.href = "cadastroProspect.html";
+      }
     </script>
-</body>
+  </body>
 </html>

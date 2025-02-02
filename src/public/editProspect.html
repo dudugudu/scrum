@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro de Prospect</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="text-center mb-4">Cadastro de Prospect</h2>
+      <form id="prospectForm">
+        <div class="mb-3">
+          <label for="name" class="form-label">Nome:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email:</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="whatsapp" class="form-label">WhatsApp:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="whatsapp"
+            name="whatsapp"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="facebook" class="form-label">Facebook:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="facebook"
+            name="facebook"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="celular" class="form-label">Celular:</label>
+          <input
+            type="tel"
+            class="form-control"
+            id="celular"
+            name="celular"
+            required
+          />
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn btn-secondary" onclick="voltar()">
+            Voltar
+          </button>
+          <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      window.onload = () => {
+        const query = new URLSearchParams(window.location.search);
+        const prospectID = query.get("id");
+
+        GetProspectID(prospectID);
+      };
+      document.getElementById("prospectForm").onsubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(document.getElementById("prospectForm"));
+        const data = Object.fromEntries(formData);
+        const query = new URLSearchParams(window.location.search);
+        const prospectID = query.get("id");
+        try {
+          const response = await fetch(
+            `http://localhost:3000/api/prospects/${prospectID}`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(data),
+            }
+          );
+          if (!response.ok)
+            throw new Error("Erro ao cadastrar prospect" + response.message);
+          window.location.href = "prospects.html";
+        } catch (error) {
+          alert(error.message);
+        }
+      };
+
+      async function GetProspectID(id) {
+        const response = await fetch(
+          `http://localhost:3000/api/prospects/${id}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const data = await response.json();
+        console.log(data);
+
+        document.getElementById("name").value = data.name;
+        document.getElementById("email").value = data.email;
+        document.getElementById("whatsapp").value = data.whatsapp;
+        document.getElementById("facebook").value = data.facebook;
+        document.getElementById("celular").value = data.celular;
+      }
+
+      function voltar() {
+        window.location.href = "prospects.html";
+      }
+    </script>
+  </body>
+</html>
