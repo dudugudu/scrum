@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes";
 import path from "path";
+import prospectRouter from "./routes/prospectRoutes";
 
 dotenv.config();
 const app = express();
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 
 app.use(bodyParser.json());
 app.use("/api/users", userRoutes);
+app.use("/api/prospects", prospectRouter);
 
 const PORT = process.env.PORT || 3000;
 
